@@ -3,26 +3,35 @@ Simple script to setup a safe shutdown on Lakka+RetroFlag
 
 Works on NESPi and SNESPi cases.
 
-# How to install
+# Install
 
 ## Enable SSH In Lakka
+
 1. Connect rPi to internet
-1. Boot up Lakka
-1. Config -> Services -> SSH Enable -> On
+2. Boot up Lakka
+3. Config -> Services -> SSH Enable -> On
+
 
 ## Install scripts
 
-1. ssh to your Lakka instance
-   ```text
-   ssh root@YOUR_LAKKA_IP_ADDRESS
-   password: root (if unchanged)
-   ```
-1. `wget -O - "https://github.com/halsafar/lakka-retroflag-safe-shutdown/raw/master/install.sh" | bash`
+```bash
+scp <repo> root@<rpi>:/tmp/safe-shutdown
+ssh root@<rpi> cd /tmp/safe-shutdown && bash install.sh
+```
+
 
 # Credits
+
 This is pretty much a cleaned up version of:
-- https://github.com/thiagoauler/lakka_nespi_power
-- https://github.com/marcelonovaes/lakka_nespi_power
+
+- <https://github.com/thiagoauler/lakka_nespi_power>
+- <https://github.com/marcelonovaes/lakka_nespi_power>
+
 
 Inspired by:
-- https://github.com/RetroFlag/retroflag-picase
+
+- <https://github.com/RetroFlag/retroflag-picase>
+
+Uses the RPi.GPIO module
+(<https://sourceforge.net/projects/raspberry-gpio-python/>). The one embedded
+seems to be 0.5.11, compiled for Python 2.7.

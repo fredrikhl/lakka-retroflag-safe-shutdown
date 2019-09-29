@@ -1,10 +1,15 @@
+#!/usr/bin/env python
+# encoding: utf-8
+"""
+Retroflag Superpi safe shutdown scripts for Lakka.
+"""
 import os
-from multiprocessing import Process
 import sys
 import time
+from multiprocessing import Process
 
 sys.path.append('./lib')
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO  # noqa: E402
 
 
 # initialize pins
@@ -17,7 +22,6 @@ PIN_POWEREN = 4  # pin 5
 def init():
     """
     initialize gpio
-    :return:
     """
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_POWER, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -30,8 +34,8 @@ def init():
 
 def poweroff():
     """
-    Waits for user to hold power button up to 1 second before issuing poweroff command
-    :return:
+    Waits for user to hold power button up to 1 second before issuing
+    poweroff command
     """
     while True:
         GPIO.wait_for_edge(PIN_POWER, GPIO.FALLING)
@@ -42,7 +46,6 @@ def poweroff():
 def led_blink():
     """
     Blinks the LED to signal button being pushed
-    :return:
     """
     while True:
         GPIO.output(PIN_LED, GPIO.HIGH)
@@ -57,7 +60,6 @@ def led_blink():
 def reset():
     """
     Resets the pi
-    :return:
     """
     while True:
         GPIO.wait_for_edge(PIN_RESET, GPIO.FALLING)
@@ -68,18 +70,16 @@ def reset():
 def main():
     """
     Entry Point
-    :return:
     """
     init()
 
-    # create a multiprocessing.Process instance for each function to enable parallelism
+    # create a multiprocessing.Process instance for each function
     power_process = Process(target=poweroff)
-    power_process.start()
-
     led_process = Process(target=led_blink)
-    led_process.start()
-
     reset_process = Process(target=reset)
+
+    power_process.start()
+    led_process.start()
     reset_process.start()
 
     power_process.join()
